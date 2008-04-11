@@ -1,0 +1,11 @@
+default: subversion-sample
+
+repositories:
+
+  subversion-sample:
+    type: subversion
+    path: /path/to/subversion/repository
+
+  mercurial-sample:
+    type: mercurial
+    path: /path/to/mercurial/repository

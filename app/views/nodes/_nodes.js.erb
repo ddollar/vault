@@ -1,0 +1,34 @@
+<%
+
+def ej(text)
+  escape_javascript(text)
+end
+
+%>
+
+<% counter = 0 %>
+
+after=$('tr<%= params['parent_id'] %>');
+
+<% nodes.sort_by(&:name).reverse.each do |node| %>
+
+<% id = params['parent_id'] + '_' + (counter = counter + 1).to_s %>
+
+insertafter = create_table_row
+({
+  after:        after,
+  id:          '<%= ej(id) %>',
+  depth:        <%= ej(@depth.to_s) %>,
+  uri:         '<%= ej(url_for([@repository, @revision, node]).gsub('%2F', '/')) %>',
+  text:        '<%= ej(node.name) %>',
+  is_directory: <%= node.is_directory ? 'true' : 'false' %>,
+  size:        '<%= ej(node.is_directory ? '' : node.size.to_s) %>',
+  revision:    '<%= ej(node.file_revision.to_s) %>',
+  date:        '<%= ej(time_ago_in_words(node.date)) %>',
+  author:      '<%= ej(node.author || '') %>',
+  log:         '<%= ej(truncate(node.log, 50)) %>'
+});
+
+<% end %>
+
+loading_finished('<%= params['parent_id'] %>');

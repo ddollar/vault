@@ -1,0 +1,18 @@
+<table id="revisions">
+  <tr>
+    <th>Revision</th>
+    <th>Age</th>
+    <th>Author</th>
+    <th>Last Log Entry</th>
+  </tr>
+  <% @revisions.each do |revision| %>
+  <tr class="<%= cycle("one", "two") %>">
+    <td>
+      <a href="<%=url_for([@repository, revision])%>"><%= h(revision.id) %></a>
+    </td>
+    <td><%= h(time_ago_in_words(revision.date)) %></td>
+    <td><%= h(revision.author || '') %></td>
+    <td><%= h(truncate(revision.log, 50)) %></td>
+  </tr>
+  <% end %>
+</table>

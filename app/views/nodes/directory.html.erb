@@ -1,0 +1,52 @@
+<script type="text/javascript">
+<!--
+	var load_path = [<%=@path && @path.length > 0 ? @path.map { |p| "'#{p}'"}.join(',') : '' %>];
+	var hash = [];
+	var need_to_hash = [];
+	
+	if (window.location.href.indexOf('#') != -1) {
+	  var hashpart = window.location.href.substring(window.location.href.indexOf('#')+1);
+	  need_to_hash = hashpart.split('|');
+	  hash = hashpart.split('|');
+	}
+-->
+</script>
+
+<table id="tree">
+  <tr>
+    <th>Name</th>
+    <th>Size</th>
+    <th>Revision</th>
+    <th>Age</th>
+    <th>Author</th>
+    <th>Last Log Entry</th>
+  </tr>
+  <tr id="trsvn0" class="<%=cycle("one","two")%>">
+    <td colspan="6" style="padding-left: 8px;">
+      <%= image_tag("icons/folder.png") %>
+      <% if !params['id'] %>
+        <strong>Revision <%= @revision.id %></strong>
+      <% else %>
+        <strong><%=File.basename(params['id'])%></strong>
+      <% end %>
+    </td>
+  </tr>
+  <!--
+  <% @nodes.each do |node| %>
+  <tr class="<%=cycle("one", "two")%>">
+    <td class="static">
+      <%= image_tag("icons/#{node.is_directory ? 'folder':'page_white'}.png") %>
+      <%= h(node.name) %>
+    </td>
+    <td class="static"><%= h(node.size) %></td>
+    <td class="static"><%= h(node.revision) %></td>
+    <td class="static"><%= time_ago_in_words(node.date) %></td>
+    <td class="static"><%= h(node.author) %></td>
+    <td class="expand"><%= h(node.log) %></td>
+  </tr>
+  <% end %>
+  -->
+</table>
+
+<%=javascript_tag(render(:partial => 'nodes.js.erb', :locals => {:nodes => @nodes}))%>
+

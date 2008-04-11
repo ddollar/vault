@@ -1,0 +1,12 @@
+<table id="repositories">
+  <tr>
+    <th>Repository</th>
+    <th>Type</th>
+  </tr>
+  <% @repositories.each do |repository| %>
+  <tr class="<%= cycle("one", "two") %>">
+    <td><a href="<%= url_for(repository) %>"><%= h(repository.name) %></a></td>
+    <td><%= h(repository.type) %></td>
+  </tr>
+  <% end %>
+</table>

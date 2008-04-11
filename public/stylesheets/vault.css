@@ -1,0 +1,136 @@
+* {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 1.0em;
+}
+
+body {
+  margin: 0px;
+}
+
+pre {
+  font-family: Monaco, monospace;
+}
+
+/** UTILITY ***********************************************************/
+
+div.clear {
+  clear: both;
+}
+
+/** LAYOUT ************************************************************/
+
+div#header {
+  background-color: #03a;
+  border-bottom: 1px #000 solid;
+  color: #fff;
+  padding: 8px 12px;
+}
+
+div#header div#identifier {
+  float: left;
+  margin: 0px;
+  margin-top: 4px;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+div#header div#build-number {
+  font-size: 0.6em;
+  float: left;
+  margin-top: 12px;
+  margin-left: 20px;
+}
+
+div#header div#repository-selector {
+  float: right;
+  margin-top: 3px;
+}
+
+div#header div#repository-selector select {
+  font-size: 0.9em;
+}
+
+div#body {
+  margin: 20px;
+}
+
+/** TABLE *************************************************************/
+
+table {
+  border: 1px #999 solid;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table th, 
+table td {
+  padding: 8px 16px 4px 8px;
+  vertical-align: middle;
+}
+
+table th {
+  background-color: #999;
+  text-align: left;
+}
+
+table td.static {
+  white-space: nowrap;
+}
+
+table td.expand {
+  width: 100%;
+}
+
+table tr.one td {
+  background-color: #eee;
+}
+
+table tr.two td {
+  background-color: #ddd;
+}
+
+table td img {
+  margin-bottom: -2px;
+  margin-right: 2px;
+}
+
+table {
+  background-color: #eee;
+}
+
+/** TREE **************************************************************/
+
+.folder, .file, .spinner {
+  background-repeat: no-repeat;
+  padding-left: 24px;
+  margin-right: 12px;
+}
+
+.closed {
+  background-image: url(/images/icons/folder.png);
+}
+
+.open {
+  background-image: url(/images/icons/folder.png);
+}
+
+.spinner {
+  background-image: url(/images/spinner.gif);
+}
+
+.file {
+  background-image: url(/images/icons/page_white.png);
+}
+
+/** FILE **************************************************************/
+ 
+pre#file {
+  background-color: #eee;
+  border: 1px #000 solid;
+  padding: 10px;
+  overflow: auto;
+  position: relative;
+}
+
+
+

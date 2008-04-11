@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+require 'yaml'
+
+if ARGV.length != 1
+  print "usage: " + $0 + " <project name>\n"
+  exit 1
+end
+
+project_name = ARGV[0]
+project_dir = project_name.downcase
+
+def file_string_replace (filename, old, new)
+  print "processing: " + filename + "\n"
+  data = ""
+  File.open(filename) do |file|
+    file.each_line do |line|
+      data += line.sub(old, new)
+    end
+  end
+  File.open(filename,"w") do |file|
+    file.puts data
+  end
+end
+
+file_string_replace("app/controllers/application.rb", "generic", project_dir)
+file_string_replace("config/database.yml", "generic", project_dir)
+file_string_replace("config/deploy.rb", "generic", project_dir)
+file_string_replace("config/mongrel_cluster.yml", "generic", project_dir)
+	

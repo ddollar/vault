@@ -1,0 +1,19 @@
+<div id="identifier">
+  Vault
+</div>
+<div id="build-number">
+  <%= build_number %>
+</div>
+<div id="repository-selector">
+  <select 
+    onchange="document.location.href=this.options[this.selectedIndex].value;">
+    <% Repository.list.sort.each do |repository| %>
+      <option 
+        <%= (@repository.name == repository.name) ? 'selected' : '' %>
+        value="<%=url_for(repository)%>">
+        <%= repository.name %>
+      </option>
+    <% end %>
+  </select>
+</div>
+<div class="clear"></div>
