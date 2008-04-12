@@ -1,5 +1,5 @@
 config/database.yml
 config/repositories.yml
-db/*
+db/*.db
 log/*
 tmp/*
