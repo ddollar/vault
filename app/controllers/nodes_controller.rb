@@ -25,7 +25,7 @@ class NodesController < ApplicationController
     @nodes     = @revision.nodes(@load_path)
     
     @nodes.sort_by do |node|
-      [node.is_directory, node.name]
+      [node.is_directory ? 0 : 1, node.name]
     end
 
     respond_to do |wants|
