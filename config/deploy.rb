@@ -12,7 +12,7 @@ load "config/targets/#{target}"
 
 # basic deployment info, should not have to change
 set :scm,         :git
-set :repository,  "git@peervoice.com:#{application_scm}.git"
+set :repository,  "git@peervoice.com:rails/#{application_scm}.git"
 set :deploy_to,   "/srv/app/#{application}"
 set :user,        "app"
 set :ssh_options, { :forward_agent => true }
