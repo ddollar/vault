@@ -24,10 +24,8 @@ class NodesController < ApplicationController
   def directory
     @nodes     = @revision.nodes(@load_path)
     
-    @nodes.sort! do |a,b|
-      # ugly hack
-      dir_compare = b.is_directory.to_s <=> a.is_directory.to_s
-      dir_compare == 0 ? a.name <=> b.name : dir_compare
+    @nodes.sort_by do |node|
+      [node.is_directory, node.name]
     end
 
     respond_to do |wants|
