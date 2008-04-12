@@ -34,9 +34,8 @@ function folder_clicked(id, uri)
     
     new Ajax.Request(uri + '?parent_id=' + id, {
       method:       'get',
-      asunchronous: true,
-      evalScripts:  false,
-      onSuccess:    function(t) { eval(t.responseText); }
+      asynchronous: true,
+      evalScripts:  false
     });
     
   }
