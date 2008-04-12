@@ -33,12 +33,6 @@ class NodesController < ApplicationController
       wants.js   { render :partial => 'nodes', 
                           :locals  => { :nodes => @nodes } }
     end
-
-#    if request.xhr?
-#      render :partial => 'show', :locals => { :nodes => @nodes }
-#    else
-#      render :action => :directory
-#    end
   end
   
   def file
