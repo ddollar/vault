@@ -1,7 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
 
   map.resources :repositories do |repository|
-    repository.resources :nodes, :requirements => { :id => /.*/ }
     repository.resources :revisions do |revision|
       revision.resources :nodes, :requirements => { :id => /.*/ }
     end
