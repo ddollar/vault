@@ -31,21 +31,6 @@
       <% end %>
     </td>
   </tr>
-  <!--
-  <% @nodes.each do |node| %>
-  <tr class="<%=cycle("one", "two")%>">
-    <td class="static">
-      <%= image_tag("icons/#{node.is_directory ? 'folder':'page_white'}.png") %>
-      <%= h(node.name) %>
-    </td>
-    <td class="static"><%= h(node.size) %></td>
-    <td class="static"><%= h(node.revision) %></td>
-    <td class="static"><%= time_ago_in_words(node.date) %></td>
-    <td class="static"><%= h(node.author) %></td>
-    <td class="expand"><%= h(node.log) %></td>
-  </tr>
-  <% end %>
-  -->
 </table>
 
 <%=javascript_tag(render(:partial => 'nodes.js.erb', :locals => {:nodes => @nodes}))%>
