@@ -12,7 +12,7 @@ class NodesController < ApplicationController
     @load_path = params['id'] || ''
 
     @depth = (params['parent_id']) ? params['parent_id'].split('_').length : 1
-    @node  = (@load_path != '') ? @revision.node(@load_path) : nil
+    @node  = @revision.node(@load_path)
     
     if @node.nil? || @node.is_directory
       directory
