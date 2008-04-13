@@ -4,7 +4,7 @@ class RepositoriesController < ApplicationController
   
   def index
     @repository = Repository.default
-    @repositories = Repository.list
+    @repositories = Repository.list.sort
   end
   
   def show
