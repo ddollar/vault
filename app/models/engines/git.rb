@@ -20,8 +20,6 @@ module Engines
     end
 
     def node(revision_id, path, load_children=true)
-      
-      puts "RID: #{revision_id}  PATH: #{path}"
       commit = @engine.commits(revision_id).first
       tree   = commit.tree
       
