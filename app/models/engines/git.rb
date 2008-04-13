@@ -26,12 +26,13 @@ module Engines
       tree   = commit.tree
       
       if path != ''
-        path.split('/').each do |subdir|
-          tree = tree / subdir
-        end
+        tree = tree / path
+        # path.split('/').each do |subdir|
+        #   tree = tree / subdir
+        # end
       end
       
-      lastcommit = Grit::Commit.list_from_string(@engine, @engine.git.log({:pretty => 'raw'}, path)).first
+      lastcommit = @engine.log('master', path).first
       
       node = Node.new
       node.fullname      = path
