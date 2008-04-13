@@ -22,11 +22,11 @@ class NodesController < ApplicationController
   end
   
   def directory
-    @nodes     = @revision.nodes(@load_path)
+    @nodes = @node.children
     
-    @nodes.sort_by do |node|
-      [node.is_directory ? 0 : 1, node.name]
-    end
+    @nodes = @nodes.sort_by do |node|
+      [node.is_directory ? -1 : 1, node.name]
+    end.reverse
 
     respond_to do |wants|
       wants.html { render :action  => :directory }
