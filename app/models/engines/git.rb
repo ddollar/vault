@@ -1,114 +1,75 @@
 require 'grit'
+require 'grit/repo'
 
 module Engines
 
   class Git
     
     def open(path)
-      @path = path
+      @engine = Grit::Repo.new(path)
     end
     
-    def session
-      ApplicationController.session
-    end
-
     def latest_revision_id
-      if execute('hg log --limit 1') =~ /changeset:\s*(\d+):([0-9a-f]+)/
-        $2
-      end
-    end
-    
-    def node_contents(revision_id, name)
-      execute("hg cat -r #{revision_id} #{name}")
-    end
-    
-    def node(revision_id, path)
-      # there has got to be a better way to do this
-      new_path = File.dirname(path)
-      new_path = '' if new_path == '.'
-      node = nodes(revision_id, new_path).detect do |find|
-        find.fullname == path
-      end
-    end
-    
-    def nodes(revision_id, path)
-      @nodes = []
-      current = manifest_cache(revision_id)
-      path.chomp.split('/').each do |part|
-        next if part == ''
-        current = current[part]
-      end
-      if current.nil? || current.length.zero?
-        current = { path.chomp.split('/').last => {} }
-        path = ''
-      end
-      current.each do |filename, children|
-        node = Node.new
-        node.fullname = (path == '') ? filename : "#{path}/#{filename}"
-        node.name = "#{filename}"
-        node.file_revision = 'TODO'
-        node.is_directory = children.length > 0
-        node.author = 'TODO'
-        node.date = Time.now
-        node.log = 'TODO'
-        node.size = 'TODO'
-        @nodes << node
-      end
-      @nodes
+      @engine.commits.first.id_abbrev
     end
     
     def revisions
-      revisions = []
-      execute('hg log').each do |line|
-        if line =~ /changeset:\s*(\d+):([0-9a-f]+)/ then
-          revisions << Revision.new($2)
-        end
+      @engine.commits.map do |commit|
+        Revision.new(commit.id_abbrev)
       end
-      revisions
-    end
-    
-    def revision_author(id)
-      "TODO"
-    end
-    
-    def revision_date(id)
-      Time.now
     end
 
-    def revision_log(id)
-      "TODO"
-    end
-    
-  private ################################################################
-  
-    def execute(command)
-      IO.popen("cd #{@path} && #{command}") do |stream|
-        stream.read
+    def node(revision_id, path, load_children=true)
+      
+      puts "RID: #{revision_id}  PATH: #{path}"
+      commit = @engine.commits(revision_id).first
+      tree   = commit.tree
+      
+      if path != ''
+        path.split('/').each do |subdir|
+          tree = tree / subdir
+        end
       end
-    end
-    
-    def manifest_cache(revision_id)
-      manifest_filename = File.join(RAILS_ROOT, 'tmp', revision_id)
-      unless File.exists?(manifest_filename)
-        manifest_text = execute("hg manifest #{revision_id}")
-        manifest = {}
-        manifest_text.each do |line|
-          current = manifest
-          line.chomp.split('/').each do |part|
-            current = current[part] ||= {}
+      
+      lastcommit = Grit::Commit.list_from_string(@engine, @engine.git.log({:pretty => 'raw'}, path)).first
+      
+      node = Node.new
+      node.fullname      = path
+      node.name          = File.basename(path)
+      node.file_revision = lastcommit.id_abbrev
+      node.is_directory  = tree.is_a?(Grit::Tree)
+      node.author        = lastcommit.author.name
+      node.date          = lastcommit.authored_date
+      node.log           = lastcommit.message
+      
+      if node.is_directory
+        node.size = -1
+        node.contents = ''
+        if load_children
+          node.children = tree.contents.map do |child|
+            node(revision_id, 
+                 path == '' ? child.name : File.join(path, child.name), 
+                 false)
           end
+        else
+          node.children = []
         end
-
-        File.open(manifest_filename, "w") do |file|
-          file.puts manifest.to_yaml
+      else
+        node.size = tree.size
+        
+        # hack to make this faster, only load contents of 'parent' node
+        if load_children
+          node.contents = tree.data
+        else
+          node.contents = ''
         end
+        
+        node.children = []
       end
-      YAML::load_file(manifest_filename)
+
+      node
     end
-    
-    def commands_by_version
-    end
-    
+
   end
 
 end

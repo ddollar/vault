@@ -55,17 +55,6 @@ class Repository
     @engine.node(revision.id, path)
   end
   
-  def node_contents(revision, path)
-    @engine.node_contents(revision.id, path)
-  end
-
-  def nodes(revision, path)
-    @engine.nodes(revision.id, path).map! do |file|
-      file.repository = self
-      file
-    end
-  end
-  
   def revision(id)
     revision = Revision.new(id)
     revision.repository = self

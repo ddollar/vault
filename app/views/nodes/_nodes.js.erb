@@ -10,7 +10,7 @@ end
 
 after=$('tr<%= params['parent_id'] %>');
 
-<% nodes.sort_by(&:name).reverse.each do |node| %>
+<% nodes.each do |node| %>
 
 <% id = params['parent_id'] + '_' + (counter = counter + 1).to_s %>
 
