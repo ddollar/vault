@@ -30,8 +30,7 @@ namespace :peervoice do
     desc "copy app-specific configuration files into place"
     task :application do
       run %{if [ -d #{conf_dir} ]; then cp -R #{conf_dir}/* #{current_path}/config/; fi}
-      require 'rake'
-      Rake::Task['peervoice:configure:target'].invoke
+      run %{rake peervoice:configure:target}
     end
     
     task :sqlite do
