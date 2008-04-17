@@ -51,7 +51,7 @@ namespace :peervoice do
     
     desc "get an available port for this mongrel"
     task :port do
-      run %{/srv/util/mongrel-port/mongrel-port.rb "#{application}" "deploy/#{mongrel_conf}" > "#{mongrel_conf}"}
+      run %{/srv/util/mongrel-port/mongrel-port.rb "#{application}" "#{mongrel_conf}.deploy" > "#{mongrel_conf}"}
     end
     
     desc "register this mongrel with nginx"
