@@ -45,8 +45,8 @@ namespace :peervoice do
     desc "set up god for these mongrels"
     task :god do
       god_conf = "/srv/conf/god/rails/#{application}.god"
-      run %{/srv/util/mongrel-god/mongrel-god.rb "#{application}" "#{mongrel_conf}" "#{god_conf}"}
-      run %{god load #{god_conf}}
+      sudo %{/srv/util/mongrel-god/mongrel-god.rb "#{application}" "#{mongrel_conf}" "#{god_conf}"}
+      sudo %{god load #{god_conf}}
     end
     
     desc "get an available port for this mongrel"
