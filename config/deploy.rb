@@ -42,15 +42,23 @@ namespace :peervoice do
     
   namespace :mongrel do
 
+    desc "set up god for these mongrels"
+    task :god do
+      god_conf = "/srv/conf/god/rails/#{application}.god"
+      run %{/srv/util/mongrel-god/mongrel-god.rb "#{application}" "#{mongrel_conf}" "#{god_conf}"}
+      run %{god load #{god_conf}}
+    end
+    
     desc "get an available port for this mongrel"
     task :port do
-      run %{/srv/util/mongrel_port/mongrel_port.rb "#{application}" "#{mongrel_conf}.deploy" > "#{mongrel_conf}"}
+      run %{/srv/util/mongrel-port/mongrel-port.rb "#{application}" "deploy/#{mongrel_conf}" > "#{mongrel_conf}"}
     end
     
     desc "register this mongrel with nginx"
     task :nginx do
       sudo %{ln -sf "#{mongrel_conf}" "/etc/mongrel/#{application}.yml"}
-      sudo %{/srv/util/mongrel_nginx/mongrel_nginx.rb "#{application}" "#{mongrel_conf}" "/srv/conf/sites/#{application}.site"}
+      sudo %{ln -sf "#{mongrel_conf}" "/srv/conf/mongrel/#{application}.yml"}
+      sudo %{/srv/util/mongrel-nginx/mongrel-nginx.rb "#{application}" "#{mongrel_conf}" "/srv/conf/sites/#{application}.site"}
       sudo %{/etc/init.d/nginx restart}
     end
 
@@ -60,4 +68,5 @@ end
 after 'deploy:update_code', 'peervoice:configure:application'
 after 'deploy:update_code', 'peervoice:configure:sqlite'
 after 'deploy:symlink',     'peervoice:mongrel:port'
+after 'deploy:symlink',     'peervoice:mongrel:god'
 after 'deploy:symlink',     'peervoice:mongrel:nginx'
