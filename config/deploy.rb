@@ -30,7 +30,7 @@ namespace :peervoice do
     desc "copy app-specific configuration files into place"
     task :application do
       run %{if [ -d #{conf_dir} ]; then cp -R #{conf_dir}/* #{current_path}/config/; fi}
-      run %{cd #{current_path} && rake peervoice:configure:target}
+      run %{cd #{release_path} && rake peervoice:configure:target}
     end
     
     task :sqlite do
@@ -57,7 +57,7 @@ namespace :peervoice do
   end
 end
 
-after 'deploy:symlink', 'peervoice:configure:application'
-after 'deploy:symlink', 'peervoice:configure:sqlite'
-after 'deploy:symlink', 'peervoice:mongrel:port'
-after 'deploy:symlink', 'peervoice:mongrel:nginx'
+after 'deploy:update_code', 'peervoice:configure:application'
+after 'deploy:symlink',     'peervoice:configure:sqlite'
+after 'deploy:symlink',     'peervoice:mongrel:port'
+after 'deploy:symlink',     'peervoice:mongrel:nginx'
