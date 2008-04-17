@@ -32,6 +32,11 @@ namespace :peervoice do
       run %{if [ -d #{conf_dir} ]; then cp -R #{conf_dir}/* #{current_path}/config/; fi}
     end
     
+    task :sqlite do
+      run "mkdir -p #{shared_path}/db"
+      run "ln -nfs #{shared_path}/db/#{application}_production.sqlite3 #{release_path}/db/#{application}_production.sqlite3"
+		end
+		    
   end
     
   namespace :mongrel do
@@ -52,5 +57,6 @@ namespace :peervoice do
 end
 
 after 'deploy:symlink', 'peervoice:configure:application'
+after 'deploy:symlink', 'peervoice:configure:sqlite'
 after 'deploy:symlink', 'peervoice:mongrel:port'
 after 'deploy:symlink', 'peervoice:mongrel:nginx'
