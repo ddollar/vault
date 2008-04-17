@@ -1,1 +1,1 @@
-generic.rb
+set :application, :generic
