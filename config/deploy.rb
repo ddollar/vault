@@ -33,8 +33,8 @@ namespace :peervoice do
     end
     
     task :sqlite do
-      run "mkdir -p #{shared_path}/db"
-      run "ln -nfs #{shared_path}/db/#{application}_production.sqlite3 #{release_path}/db/#{application}_production.sqlite3"
+      run %{mkdir -p #{shared_path}/db}
+      run %{ln -nfs #{shared_path}/db/production.sqlite3 #{release_path}/db/production.sqlite3"
 		end
 		    
   end
