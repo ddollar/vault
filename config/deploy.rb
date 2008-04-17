@@ -58,6 +58,6 @@ namespace :peervoice do
 end
 
 after 'deploy:update_code', 'peervoice:configure:application'
-after 'deploy:symlink',     'peervoice:configure:sqlite'
+after 'deploy:update_code', 'peervoice:configure:sqlite'
 after 'deploy:symlink',     'peervoice:mongrel:port'
 after 'deploy:symlink',     'peervoice:mongrel:nginx'
