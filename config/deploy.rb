@@ -30,20 +30,22 @@ namespace :peervoice do
     desc "copy app-specific configuration files into place"
     task :application do
       run %{if [ -d #{conf_dir} ]; then cp -R #{conf_dir}/* #{current_path}/config/; fi}
+      require 'rake'
+      Rake::Task['peervoice:configure:target'].invoke
     end
     
     task :sqlite do
       run %{mkdir -p #{shared_path}/db}
       run %{ln -nfs #{shared_path}/db/production.sqlite3 #{release_path}/db/production.sqlite3}
-		end
-		    
+    end
+  
   end
     
   namespace :mongrel do
 
     desc "get an available port for this mongrel"
     task :port do
-      run %{/srv/util/mongrel_port/mongrel_port.rb "#{application}" "#{mongrel_conf}.dist" > "#{mongrel_conf}"}
+      run %{/srv/util/mongrel_port/mongrel_port.rb "#{application}" "#{mongrel_conf}.deploy" > "#{mongrel_conf}"}
     end
     
     desc "register this mongrel with nginx"
