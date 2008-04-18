@@ -19,8 +19,24 @@ set :ssh_options, { :forward_agent => true }
 set :conf_dir,    "/srv/conf/apps/#{application}"
 
 # mongrel_cluster integration
-require 'mongrel_cluster/recipes'
+#require 'mongrel_cluster/recipes'
 set :mongrel_conf, "#{current_path}/config/mongrel_cluster.yml"
+
+# overload run-state tasks for god
+namespace :deploy do
+  desc "Start the application using God"
+  task :start do
+    sudo %{god start rails-#{application}-app}
+  end
+  desc "Stop the application using God"
+  task :stop do
+    sudo %{god stop rails-#{application}-app}
+  end
+  desc "Restart the application using God"
+  task :restart do
+    sudo %{god restart rails-#{application}-app}
+  end
+end
 
 # custom deploy tasks
 namespace :peervoice do
@@ -33,6 +49,7 @@ namespace :peervoice do
       run %{cd #{release_path} && rake peervoice:configure:target}
     end
     
+    desc "symlink production sqlite database into the appropriate place"
     task :sqlite do
       run %{mkdir -p #{shared_path}/db}
       run %{ln -nfs #{shared_path}/db/production.sqlite3 #{release_path}/db/production.sqlite3}
