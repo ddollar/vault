@@ -45,7 +45,7 @@ namespace :peervoice do
   
     desc "copy app-specific configuration files into place"
     task :application do
-      run %{if [ -d #{conf_dir} ]; then cp -R #{conf_dir}/* #{current_path}/config/; fi}
+      run %{if [ -d #{conf_dir} ]; then cp -R #{conf_dir}/* #{release_path}/config/; fi}
       run %{cd #{release_path} && rake peervoice:configure:target}
     end
     
@@ -76,7 +76,7 @@ namespace :peervoice do
       sudo %{ln -sf "#{mongrel_conf}" "/etc/mongrel/#{application}.yml"}
       sudo %{ln -sf "#{mongrel_conf}" "/srv/conf/mongrel/#{application}.yml"}
       sudo %{/srv/util/mongrel-nginx/mongrel-nginx.rb "#{application}" "#{mongrel_conf}" "/srv/conf/sites/#{application}.site"}
-      sudo %{/etc/init.d/nginx restart}
+      sudo %{god restart nginx}
     end
 
   end
