@@ -45,7 +45,7 @@ namespace :peervoice do
   
     desc "copy app-specific configuration files into place"
     task :application do
-      run %{if [ -d #{conf_dir} ]; then cp -R #{conf_dir}/* #{current_path}/config/; fi}
+      run %{if [ -d #{conf_dir} ]; then cp -R #{conf_dir}/* #{release_path}/config/; fi}
       run %{cd #{release_path} && rake peervoice:configure:target}
     end
     
